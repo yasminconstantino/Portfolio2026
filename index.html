@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Yasmin Constantino">
+    <meta name="date" content="2026-11-05">
+    <link rel="shortcut icon" type="imagex/png" href="assets\images\yc.png">
+    <title>Portfólio Yasmin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f1115;
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Layout Principal dividido em colunas */
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* 1. QUADRANTE AZUL: Menu Interativo (Esquerda) */
+        .menu-lateral {
+            width: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-right: 15px;
+            justify-content: center;
+        }
+
+        .menu-item {
+            background: rgba(25, 30, 40, 0.8);
+            color: #d5a0df;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: #480058;
+            color: #ffffff;
+            box-shadow: 0 0 10px #5e1c76fa;
+            transform: scale(1.05);
+        }
+
+        /* 2. QUADRANTE ROSA: Conteúdo Dinâmico (Centro) */
+        .conteudo-central {
+            flex: 1;
+            background: rgba(20, 22, 28, 0.6);
+            border-radius: 12px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            backdrop-filter: blur(5px);
+            overflow-y: auto;
+        }
+
+        .secao-conteudo {
+            display: none;
+        }
+
+        .secao-conteudo.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .conteudo-central h2 {
+            color: #830694;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        h3 {
+            color: #bdd3f7;
+            font-size: 1.6rem;
+        }
+
+        .conteudo-central p, .conteudo-central ul {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #d1d5db;
+        }
+
+        .conteudo-central ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        /* --- ESTILIZAÇÃO DOS CARDS DE PROJETOS --- */
+        .projetos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .projeto-card {
+            background: rgba(25, 30, 40, 0.8);
+            border: 1px solid rgba(131, 6, 148, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .projeto-card p {
+            font-size: 0.95rem;
+            color: #c5cbd3;
+        }
+
+        .projeto-card a, a {
+            color: #830694;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        #links a {
+            font-size: 1.6rem;
+        }
+
+        .projeto-card a:hover, a:hover {
+            color: #bdd3f7;
+            text-decoration: underline;
+        }
+
+        .projeto-card:hover {
+            transform: scale(1.03);
+            background: rgba(35, 42, 58, 0.9);
+            border-color: #830694;
+            box-shadow: 0 5px 15px rgba(131, 6, 148, 0.3);
+        }
+        /* --------------------------------------- */
+
+        /* --- ESTILIZAÇÃO DA LINHA DO TEMPO (EXPERIÊNCIAS) --- */
+        .timeline {
+            position: relative;
+            margin-top: 30px;
+            padding-left: 30px;
+        }
+
+        /* Linha vertical central da timeline */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 5px;
+            bottom: 5px;
+            width: 3px;
+            background: rgba(131, 6, 148, 0.4);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            background: rgba(25, 30, 40, 0.8);
+            border: 1px solid rgba(131, 6, 148, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Marcador circular na linha do tempo */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 24px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #830694;
+            border: 3px solid #0f1115;
+            box-shadow: 0 0 8px #830694;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(5px);
+            border-color: #830694;
+            background: rgba(35, 42, 58, 0.9);
+            box-shadow: 0 5px 15px rgba(131, 6, 148, 0.2);
+        }
+
+        .timeline-cargo {
+            color: #d5a0df;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .timeline-empresa {
+            color: #bdd3f7;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .timeline-periodo {
+            display: inline-block;
+            background: rgba(131, 6, 148, 0.2);
+            color: #d1d5db;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .timeline-desc {
+            font-size: 0.95rem;
+            color: #c5cbd3;
+            line-height: 1.5;
+        }
+        /* ---------------------------------------------------- */
+
+        /* 3. QUADRANTE VERDE: Imagem Estática (Direita) */
+        .painel-imagem {
+            width: 350px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .imii{max-width: 30px; max-height: 30px;}
+        .imii2{max-width: 85px; max-height: 85px;}
+        /* .arty {max-width: 50%;} */
+
+        .painel-imagem img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Efeito de transição suave */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- QUADRANTE AZUL: Menu Interativo -->
+        <nav class="menu-lateral">
+            <div style="text-align: center;" onclick="mudarSecao('projetos', this)">
+                <img class="imii2" src="assets\images\yc.png" alt="">
+            </div>
+            <div class="menu-item active" onclick="mudarSecao('sobre', this)">
+                <img class="imii" src="assets\images\info.png" alt=""> Sobre Mim
+            </div>
+            <div class="menu-item" onclick="mudarSecao('projetos', this)">
+                <img class="imii" src="assets\images\work.png" alt=""> Projetos
+            </div>
+            <div class="menu-item" onclick="mudarSecao('tecnologias', this)">
+                <img class="imii" src="assets\images\code_blocks.png" alt=""> Tecnologias
+            </div>
+            <div class="menu-item" onclick="mudarSecao('experiencias', this)">
+                <img class="imii" src="assets\images\work_history.png" alt=""> Experiências
+            </div>
+            <div class="menu-item" onclick="mudarSecao('arte', this)">
+                <img class="imii" src="assets\images\palette.png" alt=""> Arte
+            </div>
+            <div class="menu-item" onclick="mudarSecao('links', this)">
+                <img class="imii" src="assets\images\link.png" alt=""> Links
+            </div>
+        </nav>
+
+        <!-- QUADRANTE ROSA: Conteúdo Dinâmico -->
+        <main class="conteudo-central">
+            <!-- Seção Sobre Mim -->
+            <section id="sobre" class="secao-conteudo active">
+                <h2>Sobre Mim</h2>
+                <h3>Hello There!</h3>
+                <p>Sou uma Engenheira de Dados, tenho experiência com SQL, AWS Quicksight e Databricks, Power BI e Python, atuei em projetos de criação de ferramentas de automacao e criação de cojversor de spark para SQL, projetos de migracao de datasets e dashboards do Looker e Looker ML para Darabricks e Quicksight e a criação de analises de dados no Power BI e Quicksight.</p>
+                <br>
+                <p>Além de ter experiência em desenvolvimento web full stack, utilizei PHP Laravel para construir uma API Rest, consumida pelo front end em react, criação e reaproveitamento de componentes, utilizei a biblioteca Full Calendar junto com a biblioteca carbon para criar uma calendário interativo manipulável, com dados salvos no banco de dados, hospedagem no heroku e netlify.</p>
+                <br>
+                <p>Recentemente me graduei como Tecnóloga em Sistemas para Internet, pelo IFSUL campus Pelotas.</p>
+                <br>
+                <p>Possuo interesse e participação em projetos de desenvolvimento de jogos, onde trabalhei no desenvolvimento e ilustração de um jogo para uma game jam, alem de atuar na ilustração de pequenos jogos independentes.</p>
+                <br>
+                <p>Gosto de me manter em constante evolução, unindo curiosidade, aprendizado rápido e vontade de enfrentar desafios.</p>
+            </section>
+
+            <!-- Seção Projetos -->
+            <section id="projetos" class="secao-conteudo">
+                <h2>Projetos</h2>
+                <p>Aqui estão alguns dos meus principais trabalhos realizados:</p>
+                
+                <div class="projetos-grid">
+                    <div class="projeto-card">
+                        <h3>FindVet</h3>
+                        <img src="assets\images\Findvet.png" alt="">
+                        <p>Plataforma voltada para conectar tutores a serviços veterinários.</p>
+                        <p>A ideia principal consistia em exibir os veterinários cadastrados e permitir busca por especialidade e região. Após encontrar um veterinário o tutor do pet poderia visualizar informações de contato e localização e agendar uma consulta com o veterinário. Ambos usuários receberiam notificações referentes a diferentes status do agendamento.</p>
+                        <p>Informações de prontuários, exames e procedimentos realizados e medicações utilizadas centralizadas em um só lugar.</p>
+                        <p><strong>Linguagens e Tecnologias:</strong> <i>React JS, PHP Laravel, Maria DB, Carbon, Full Calendar, Cron, Bucket R2 Cloudflare, Netlify e Heroku</i></p>
+                        <p><strong>Contribuição:</strong> <i>Pesquisas, Planejamento, Modelagem, Desenvolvimento, Design, Testes e Melhorias</i></p>
+                        <a href="https://youtu.be/I4g6SncgB8U" target="_blank">Assistir no YouTube &rarr;</a>
+                    </div>
+                    
+                    <div class="projeto-card">
+                        <h3>Cuca's Lair</h3>
+                        <img src="assets\images\level1.png" alt="">
+                        <p>Neste jogo, você joga como Sadie, uma garota que foi sequestrada por Cuca e tem que encontrar uma forma de escapar.</p>
+                        <p>O tema era criar um jogo baseado em alguma lenda do folclore do país de origem dos membros da equipe. A lenda escolhida foi a da Cuca.</p>
+                        <p>Jogo desenvolvido em parceria, como membro da Equipe Witchcraft para a Monarca Game Jam 2024.</p>
+                        <p><strong>Contribuição:</strong> <i>Ilustração e Trilha sonora.</i></p>
+                        <a href="https://andressa-lc.itch.io/cucas-lair" target="_blank">Acesse a página do Itch.io &rarr;</a>
+                    </div>
+
+                    <div class="projeto-card">
+                        <h3>Coleta e Tratamento e Análise de Dados</h3>
+                        <img src="assets\images\ContagemVotosVSArtistas.png" alt="">
+                        <p>Dashboard criado a partir de dados extraídos da API do TMDB, realizado de forma automatizada nos ambientes da AWS.</p>
+                        <p>Todo o projeto foi organizado em Sprints, onde cada uma era uma fase, desde os primeiros estudos sobre as tecnologias base e tecnologias específicas para o uso dos ambientes da AWS.</p>
+                        <p>Os dados foram coletados, classificados, limpos, padronizados, organizados e então alimentavam uma tabela para gerar os gráficos, todos os processos eram realizados de forma automática e novos dados eram coletados a cada 15 dias.</p>
+                        <a href="https://github.com/yasminconstantino/Projeto-Estagio-Eng-e-Analise-de-dados/tree/main" target="_blank">Acesse o repositório com códigos utilizados, relatórios e imagens a cada sprint</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Tecnologias -->
+            <section id="tecnologias" class="secao-conteudo">
+                <h2>Tecnologias</h2>
+                <p>Ferramentas e linguagens com as quais trabalho e possuo experiência e autonomia:</p>
+                <ul>
+                    <li><strong>Linguagens de Programação:</strong> JavaScript, Python (processamento de dados e automatização), C++, C, Java, PHP (Laravel), React, React Native, HTML e CSS.</li>
+                    <br>
+                    <li><strong>Engenharia de Dados:</strong> Desenvolvimento de pipelines de dados, ETL/ELT, processamento de dados com Apache Spark e PySpark. Escrita e otimização de queries SQL, modelagem de datasets e análise de dados. Experiência com AWS Cloud Services, incluindo criação de datasets e dashboards no AWS QuickSight. Migração de relatórios e dashboards do Looker e Looker Studio para QuickSight. Criação e manutenção de dashboards analíticos e relatórios interativos.</li>
+                    <br>
+                    <li><strong>Versionamento e DevOps:</strong> Controle de versão com Git e GitHub, conteinerização com Docker.</li>
+                    <br>
+                    <li><strong>Design e Multimídia:</strong> Ilustração digital com Krita, edição de imagens e vídeos.</li>
+                </ul>
+            </section>
+
+            <!-- Seção Experiências (Atualizada para Linha do Tempo) -->
+            <section id="experiencias" class="secao-conteudo">
+                <h2>Experiências</h2>
+                <p>Minha trajetória profissional na área de desenvolvimento:</p>
+                
+                <div class="timeline">
+                    <!-- Cargo 1 -->
+                    <div class="timeline-item">
+                        <div class="timeline-cargo">Desenhista e Ilustradora Freelancer (Arte e Jogos)</div>
+                        <div class="timeline-empresa">Projetos Independentes & Game Jams</div>
+                        <div class="timeline-periodo">2021 - 2026</div>
+                        <div class="timeline-desc">Criação de conceitos visuais, ilustrações digitais com Krita para jogos independentes, eventos de game jam e peças de arte tradicional.</div>
+                    </div>
+
+                    <!-- Cargo 2 -->
+                    <div class="timeline-item">
+                        <div class="timeline-cargo"> Auxiliar Administrativo com Suporte de TI</div>
+                        <div class="timeline-empresa">Atividade Administrativas e Suporte Técnico</div>
+                        <div class="timeline-periodo">07/2026 - Atualmente</div>
+                        <div class="timeline-desc">Organização de documentos, preenchimento de planilhas, emissão ou controle de notas fiscais, controle de estoque de materiais, atendimento a clientes/fornecedores e suporte a setores como financeiro e RH <br>  Atendimento de chamados (helpdesk), formatação de computadores, instalação de softwares e impressoras, troca de periféricos, manutenção básica de rede e suporte direto aos usuários.</div>
+                    </div>
+
+                    <!-- Cargo 3 -->
+                    <div class="timeline-item">
+                        <div class="timeline-cargo">Desenvolvedor Full Stack (Projeto FindVet)</div>
+                        <div class="timeline-empresa">Projeto Acadêmico / Plataforma Web</div>
+                        <div class="timeline-periodo">IFSul (Campus Pelotas) &nbsp;&nbsp;| &nbsp;&nbsp; 01/2024 - 07/2026</div>
+                        <div class="timeline-desc">Desenvolvimento completo de aplicação web integrando front-end em React com API REST em PHP Laravel, banco de dados MariaDB e gerenciamento de arquivos na nuvem.</div>
+                    </div>
+
+                    <!-- Cargo 4 -->
+                    <div class="timeline-item">
+                        <div class="timeline-cargo">Engenheira de Dados Trainee</div>
+                        <div class="timeline-empresa">Ambiente Corporativo e Cloud (AWS)</div>
+                        <div class="timeline-periodo">Compass UOL &nbsp;&nbsp;| &nbsp;&nbsp; 05/2025 - 01/2026</div>
+                        <div class="timeline-desc">Atuação na criação de pipelines de dados, automações em Python, migração de datasets e relatórios para Databricks e AWS QuickSight, e desenvolvimento de dashboards analíticos.</div>
+                    </div>
+
+                    <!-- Cargo 5 -->
+                    <div class="timeline-item">
+                        <div class="timeline-cargo">Estágio em Engenharia e Analise de Dados</div>
+                        <div class="timeline-empresa">Projetos Atuais e Contínuos</div>
+                        <div class="timeline-periodo">Compass UOL &nbsp;&nbsp;| &nbsp;&nbsp; 07/2024 - 12/2024</div>
+                        <div class="timeline-desc">Foco no refinamento de arquiteturas web full stack, reuso de componentes, otimização de consultas e consolidação de ferramentas de Business Intelligence e análises avançadas.</div>
+                    </div>
+
+                    <!-- Cargo 6 -->
+                    <div class="timeline-item">
+                        <div class="timeline-cargo">Auxiliar Administrativo</div>
+                        <div class="timeline-empresa">Atividades admnistrativas</div>
+                        <div class="timeline-periodo">Prokar Mecânica e Auto Peças &nbsp;&nbsp;| &nbsp;&nbsp; 01/2022 - 07/2023</div>
+                        <div class="timeline-desc">Atendimento ao cliente, controle de estoque de materiais, atividades de contabilidade básica, administração de agendas e compromissos, etc.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Arte -->
+            <section id="arte" class="secao-conteudo">
+                <h2>Projetos Artisticos</h2>
+                <p>Aqui estão alguns dos meus principais trabalhos artísticos realizados:</p>
+                
+                <div class="projetos-grid">
+                    <div class="projeto-card">
+                        <h3>Ford Mustang - Pixel Art</h3>
+                        <img src="assets\images\car1.png" alt="">
+                    </div>
+                    
+                    <div class="projeto-card">
+                        <h3>Passaro - Pixel Art</h3>
+                        <img src="assets\images\bird1.png" alt="">
+                    </div>
+
+                    <div class="projeto-card">
+                        <h3>Nivel 3 do Cuca's Lair</h3>
+                        <img src="assets\images\level31x1.png" class="arty" alt="">
+                    </div>
+                </div>
+                <br>
+                <p>Trabalho com ilustração digital, e continuo aprimorando minhas habilidades. Além disso, trabalho com arte realista em desenho tradicional, utilizando papel, lápis, canetas, carvão, giz pastel oleoso, tinta guache e aquarela.</p>
+            </section>
+
+            <!-- Seção links -->
+            <section id="links" class="secao-conteudo">
+                <h2>Links</h2>
+                <p>Links onde você pode me encontrar ou conhecer mais sobre meus trabalhos:</p>
+                <ul>
+                    <li><a href="https://yasminconstantino.itch.io/" target="_blank">Itch.io</a></li>
+                    <li><a href="https://github.com/yasminconstantino" target="_blank">Github</a></li>
+                    <li><a href="https://www.linkedin.com/in/yasmin-constantino/" target="_blank">LinkedIn</a></li>
+                    <li><a href="#" target="_blank">Lattes</a></li>
+                </ul>
+            </section>
+        </main>
+
+        <!-- QUADRANTE VERDE: Imagem Estática -->
+        <aside class="painel-imagem">
+            <img src="assets\images\try.png" alt="Imagem Estática">
+        </aside>
+    </div>
+
+    <script>
+        // Função JavaScript responsável por alternar as abas dinamicamente
+        function mudarSecao(idSecao, elementoClicado) {
+            // Oculta todas as seções de conteúdo
+            const secoes = document.querySelectorAll('.secao-conteudo');
+            secoes.forEach(secao => secao.classList.remove('active'));
+
+            // Remove a classe 'active' de todos os botões do menu
+            const botoes = document.querySelectorAll('.menu-item');
+            botoes.forEach(botao => botao.classList.remove('active'));
+
+            // Mostra a seção correspondente ao botão clicado e ativa o botão
+            document.getElementById(idSecao).classList.add('active');
+            elementoClicado.classList.add('active');
+        }
+    </script>
+</body>
+</html>
